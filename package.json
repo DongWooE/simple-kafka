@@ -1,0 +1,23 @@
+{
+  "name": "simple-kafka",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DongWooE/simple-kafka.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DongWooE/simple-kafka/issues"
+  },
+  "homepage": "https://github.com/DongWooE/simple-kafka#readme",
+  "dependencies": {
+    "kafka-node": "^5.0.0"
+  }
+}
