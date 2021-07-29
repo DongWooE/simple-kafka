@@ -1,0 +1,20 @@
+version: "3"
+services:
+  zookeeper:
+    image: 'bitnami/zookeeper:latest'       ##bitnami image 사용
+    ports:
+      - '2181:2181'                         ##zookeeper의 포트는 2181로 설정
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes           ##익명의 로그인 승인
+  kafka:
+    image: 'bitnami/kafka:latest'
+    ports:
+      - '9092:9092'
+    environment:
+      - KAFKA_BROKER_ID=1                   ##kafka broker id를 설정, broker는 카프카 서버 개수대로 설정하고 지금은 1개이므로 '1'
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092       
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181      ##zookeeper와의 연동
+      - ALLOW_PLAINTEXT_LISTENER=yes        ##인증되지않은 listener에 대해서 승인
+    depends_on:
+      - zookeeper
