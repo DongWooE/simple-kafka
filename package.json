@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "make:producer": "node ./consumer/index.js",
+    "make:consumer": "node  ./producer/index.js"
   },
   "repository": {
     "type": "git",
