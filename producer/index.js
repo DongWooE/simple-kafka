@@ -1,48 +1,44 @@
 const createTopic = require('./createTopic');
 
-const producer = (number)=> {
-    try {
+const producer = ()=> {
+    return new Promise((resolve,reject)=>{
         const kafka = require('kafka-node'),
-        Producer = kafka.Producer,
-        client = new kafka.KafkaClient(),
-        producer = new Producer(client);
-
-        const payloads = [{
-            topic : 'topic1',
-            messages : number,
-            partition : 0
-        }]; 
-        return new Promise((resolve, reject)=>{
-            producer.on('ready', ()=>{
-                console.log("producer :: ");
-                producer.send(payloads, (err, data)=>{
+        HighLevelProducer = kafka.HighLevelProducer,
+        client = new kafka.KafkaClient({
+        }),
+        producer = new HighLevelProducer(client,{
+            requireAcks:1, 
+            ackTimeoutMs:100,
+            partitionerType:1
+            });
+        producer.on('ready', ()=>{
+                client.refreshMetadata(['topic1', 'topic2'], (err)=>{
                     if(err){
+                        console.log(err);
                         reject(err);
                     }
-                    resolve(data);
-                })
-            })
-            producer.on('error', error =>{
-                reject(error);
-            })
-        })
-    } catch (error) {
-        if(error == kafka.TopicsNotExistError){
-            createTopic();
-        }
-    }
-    
+                    resolve(producer);
+                });
+            });                
+        producer.on('error', error =>{
+            console.log(error);
+        });
+    })
 };
 
-let number = 0;
-let timerId = setInterval(() =>{
-    number++;
-    producer(number)
-        .then((data)=>console.log(data))
-        .catch((data)=>console.log(data));
-    }
-, 2000);
+createTopic();
+producer()
+    .then((producer)=>{
+        const payloads = [
+        {topic : 'topic2' ,messages : 'hihi'}
+    ];
+        setInterval(()=>{
+            console.log("producer ::");
+            producer.send(payloads, (err,data)=> console.log(data));
+        },1000);
+    })
+    .catch((err)=> console.log(err));
 
-setTimeout(() => { clearInterval(timerId); console.log('STOP'); }, 10000);
+
 
 module.exports = producer;

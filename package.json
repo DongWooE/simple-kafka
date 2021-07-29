@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "make:producer": "node ./consumer/index.js",
-    "make:consumer": "node  ./producer/index.js"
+    "make:producer": "node ./producer/index.js",
+    "make:consumer": "node  ./consumer/index.js",
+    "logo": "node ./logo/index.js"
   },
   "repository": {
     "type": "git",
